@@ -20,7 +20,8 @@ export class createDoctors1607115221948 implements MigrationInterface {
           },
           {
             name : 'crm',
-            type : 'varchar'
+            type : 'varchar',
+            isUnique : true
           },
           {
             name : 'landline',
