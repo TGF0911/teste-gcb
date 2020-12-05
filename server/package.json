@@ -9,17 +9,22 @@
       "start": "ts-node src/index.ts"
    },
    "dependencies": {
+      "chai": "^4.2.0",
       "express": "^4.17.1",
-      "sqlite3": "^5.0.0",
-      "typeorm": "0.2.29",
+      "mocha": "^8.2.1",
+      "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.10",
-      "mysql": "^2.14.1"
+      "sqlite3": "^5.0.0",
+      "typeorm": "0.2.29"
    },
    "devDependencies": {
+      "@types/chai": "^4.2.14",
       "@types/express": "^4.17.9",
-      "ts-node-dev": "^1.0.0",
-      "typescript": "3.3.3333",
+      "@types/mocha": "^8.0.4",
+      "@types/node": "^8.0.29",
+      "axios": "^0.21.0",
       "ts-node": "3.3.0",
-      "@types/node": "^8.0.29"
+      "ts-node-dev": "^1.0.0",
+      "typescript": "3.3.3333"
    }
 }

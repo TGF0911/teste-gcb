@@ -10,9 +10,9 @@ export default {
 
     const doctorRepository = getRepository(Doctor);
 
-    const doctor = doctorRepository.findOne({crm: crm})
+    const doctor = doctorRepository.findOne({crm: crm});
     
-    if(doctor) return res.status(401).json({message: 'This doctor is already registered'})
+    if(doctor) return res.status(401).json({message: 'This doctor is already registered'});
 
     const data = {
       name,
@@ -22,17 +22,27 @@ export default {
       landline
     }
 
-    const doctorData = doctorRepository.create(data)
-    await doctorRepository.save(doctorData)
+    const doctorData = doctorRepository.create(data);
+    await doctorRepository.save(doctorData);
 
-    return res.status(201).json(doctor)
+    return res.status(201).json(doctor);
   },
 
   async index(req : Request, res : Response) {
     const doctorRepository = getRepository(Doctor);
 
-    const doctors = await doctorRepository.find()
+    const doctors = await doctorRepository.find();
 
-    return res.json(doctors)
+    return res.json(doctors);
+  },
+
+  async show(req : Request, res : Response){
+    const {id} = req.params;
+
+    const doctorRepository = getRepository(Doctor);
+
+    const doctor = await doctorRepository.findOneOrFail(id)
+    return res.json(doctor)
+
   }
 }
