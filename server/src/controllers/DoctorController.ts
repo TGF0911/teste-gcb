@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 import { getRepository } from 'typeorm'
-import Doctor from '../models/Doctor'
-import Specialty from '../models/Specialty'
+import { Doctor } from '../models/Doctor'
+import { Specialty } from '../models/Specialty'
 import * as Yup from 'yup'
 
 export default {

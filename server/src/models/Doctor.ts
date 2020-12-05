@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm'
-import Specialty from './Specialty'
+import { Specialty } from './Specialty'
 
 @Entity('doctors')
-export default class Doctor {
+export class Doctor {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,6 +22,6 @@ export default class Doctor {
   cep: string;
 
   @ManyToMany(specialty => Specialty)
-  @JoinTable({ name: 'doctors_specialty', joinColumn: { name: 'specialty_id' }, inverseJoinColumn: { name: 'doctor_id' } })
+  @JoinTable({ name: 'doctors_specialties_specialty', joinColumn: { name: 'doctor_id' }, inverseJoinColumn: { name: 'specialty_id' } })
   specialties : Specialty[]
 }

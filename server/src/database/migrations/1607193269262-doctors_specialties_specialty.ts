@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm'
 export class doctorsSpecialtiesSpecialty1607193269262 implements MigrationInterface {
   public async up (queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(new Table({
-      name: 'doctors_specialty',
+      name: 'doctors_specialties_specialty',
       columns: [
         {
           name: 'id',
@@ -24,24 +24,27 @@ export class doctorsSpecialtiesSpecialty1607193269262 implements MigrationInterf
       ],
       foreignKeys: [
         {
-          name: 'DoctorsToSpecialty',
+          name: 'DoctorsSpecialty',
           columnNames: ['specialty_id'],
           referencedTableName: 'specialties',
           referencedColumnNames: ['id'],
-          onUpdate: 'CASCADE'
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE'
+
         },
         {
-          name: 'SpecialtyToDoctor',
+          name: 'SpecialtyDoctor',
           columnNames: ['doctor_id'],
           referencedTableName: 'doctors',
           referencedColumnNames: ['id'],
-          onUpdate: 'CASCADE'
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE'
         }
       ]
     }))
   }
 
   public async down (queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('doctors_specialty')
+    await queryRunner.dropTable('doctors_specialties_specialty')
   }
 }
