@@ -19,7 +19,7 @@ export default {
       crm,
       cep,
       phone,
-      landline
+      landline 
     }
 
     const doctorData = doctorRepository.create(data);
@@ -35,7 +35,7 @@ export default {
 
     return res.json(doctors);
   },
-
+ 
   async show(req : Request, res : Response){
     const {id} = req.params;
 

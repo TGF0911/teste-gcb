@@ -36,4 +36,17 @@ describe('Doctors Routes', async () => {
       const doctor : Doctor = data
       expect(doctor).to.be.an('object').to.have.property('id').to.equal(1);
     })
+
+    it('should return a error message', async () => {
+      const doctor: Doctor = {
+        name: 'Drauzio Varella',
+        crm: '23.498.09',
+        cep: '03474-050',
+        phone: '119920706161',
+        landline: '29654460'
+      }
+      const { data } = await api.post('/doctors', doctor);
+
+      expect(data).to.have.property(status).to.equal(401)
+    })
 })
