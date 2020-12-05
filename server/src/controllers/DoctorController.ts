@@ -1,25 +1,32 @@
 import { Response, Request } from 'express'
 import { getRepository } from 'typeorm'
 import Doctor from '../models/Doctor'
+import Specialty from '../models/Specialty'
 import * as Yup from 'yup'
 
 export default {
 
   async create (req : Request, res : Response) {
     const { name, crm, cep, phone, landline } = req.body
+    const specialty = req.body.specialty as Specialty[]
 
     const doctorRepository = getRepository(Doctor)
 
-    const doctor = doctorRepository.findOne({ crm: crm })
+    const doctor = await doctorRepository.findOne({ crm: crm })
 
     if (doctor) return res.status(401).json({ message: 'This doctor is already registered' })
+
+    const specialties = specialty.map((specialty : Specialty) => {
+      return { id: specialty.id }
+    })
 
     const data = {
       name,
       crm,
       cep,
       phone,
-      landline
+      landline,
+      specialties
     }
 
     const schema = Yup.object().shape({
