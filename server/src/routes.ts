@@ -11,7 +11,12 @@ routes.get('/doctors/:id', DoctorController.show)
 routes.put('/doctor/:crm', DoctorController.update)
 routes.delete('/doctor/:id', DoctorController.delete)
 
+routes.get('/doctor/name', SearchController.findByName)
 routes.get('/doctor/cep', SearchController.findCEP)
+routes.get('/doctor/crm', SearchController.findCRM)
+routes.get('/doctor/speciality', SearchController.findSpecialty)
+routes.get('/doctor/landline', SearchController.findLandline)
+routes.get('/doctor/phone', SearchController.findPhone)
 
 routes.post('/specialty', SpecialtyController.create)
 

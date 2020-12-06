@@ -97,14 +97,14 @@ export default function CreateDoctors() {
                 setSpecialties([...specialties, e.target.value]);
               }}
               options={[
-                { value: 1, label: 'Artes' },
-                { value: 2, label: 'Biologia' },
-                { value: 3, label: 'Ciências' },
-                { value: 4, label: 'Física' },
-                { value: 5, label: 'História' },
-                { value: 6, label: 'Matemática' },
-                { value: 7, label: 'Português' },
-                { value: 8, label: 'Química' },
+                { value: 1, label: 'ALERGOLOGIA' },
+                { value: 2, label: 'ANGIOLOGIA' },
+                { value: 3, label: 'BUCO MAXILO' },
+                { value: 4, label: 'CARDIOLOGIA CLÍNICA' },
+                { value: 5, label: 'CARDIOLOGIA INFANTIL' },
+                { value: 6, label: 'CIRURGIA CABEÇA E PESCOÇO' },
+                { value: 7, label: 'CIRURGIA CARDÍACA' },
+                { value: 8, label: 'CIRURGIA DE TÓRAX' },
               ]}
             />
           })}
