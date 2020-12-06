@@ -1,4 +1,7 @@
 import React, {FormEvent, useState} from 'react'
+import api from '../services/api'
+
+import '../styles/create-doctor.css'
 
 export default function CreateDoctors(){
 
@@ -10,6 +13,20 @@ export default function CreateDoctors(){
   const [specialties, setSpecialties] = useState([])
 
   async function handleSubmit(e : FormEvent){
+    e.preventDefault()
+
+    //Buscar api do correio
+
+    const data = new FormData()
+
+    data.append('name', name)
+    data.append('crm', crm)
+    data.append('cep', cep)
+    data.append('landline', landline)
+    data.append('phone', phone)
+
+    await api.post('/doctors', data)
+
     
   }
 
@@ -20,17 +37,17 @@ export default function CreateDoctors(){
           <legend>Dados do Médico</legend>
           <div className="input-block">
             <label htmlFor="name">Nome Completo:</label>
-            <input type="text" id="name" value={name} onChange={e => setName(e.target.value)}/>
+            <input type="text" maxLength={120} id="name" value={name} onChange={e => setName(e.target.value)}/>
           </div>
 
           <div className="input-block">
             <label htmlFor="crm">CRM:</label>
-            <input type="text" id="crm" value={crm} onChange={e => setCrm(e.target.value)}/>
+            <input type="text"   id="crm" value={crm} onChange={e => setCrm(e.target.value)}/>
           </div>
 
           <div className="input-block">
             <label htmlFor="cep">CEP:</label>
-            <input type="text" id="cep" value={cep} onChange={e => setCep(e.target.value)}/>
+            <input type="text" maxLength={9} id="cep" value={cep} onChange={e => setCep(e.target.value)}/>
           </div>
 
           <div className="input-block">
