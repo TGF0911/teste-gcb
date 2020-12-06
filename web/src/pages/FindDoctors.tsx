@@ -24,6 +24,10 @@ export default function FindDoctors() {
     api.get('/doctors').then(({ data }) => setDoctors(data))
   })
 
+  async function findDoctor(){
+    
+  }
+
   async function handleDeleteDoctor(id : number){
 
   }
