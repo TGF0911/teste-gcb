@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import api from '../services/api'
-import {useHistory} from 'react-router-dom'
-import {HiPencilAlt} from 'react-icons/hi'
-import {FiTrash} from 'react-icons/fi'
+import { useHistory } from 'react-router-dom'
+import { HiPencilAlt } from 'react-icons/hi'
+import { FiTrash } from 'react-icons/fi'
+import Select from '../components/Select'
 
 interface Doctor {
   id: number;
@@ -11,6 +12,12 @@ interface Doctor {
   cep: string;
   landline: string;
   phone: string;
+  specialties: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
 }
 
 export default function FindDoctors() {
@@ -19,16 +26,18 @@ export default function FindDoctors() {
 
   const [text, setText] = useState('')
   const [doctors, setDoctors] = useState<Doctor[]>([])
+  const [selected, setSelected] = useState('')
 
   useEffect(() => {
     api.get('/doctors').then(({ data }) => setDoctors(data))
   })
 
-  async function findDoctor(){
+  async function findDoctor() {
     
+
   }
 
-  async function handleDeleteDoctor(id : number){
+  async function handleDeleteDoctor(id: number) {
 
   }
 
@@ -42,10 +51,27 @@ export default function FindDoctors() {
             <label htmlFor="text">Pesquisa:</label>
             <input type="text" id="text" value={text} onChange={e => setText(e.target.value)} />
           </div>
+
+          <Select
+              name="speciality"
+              label="Especialidade"
+              value={selected}
+              onChange={(e) => {
+                setSelected( e.target.value);
+              }}
+              options={[
+                { value: 1, label: 'Artes' },
+                { value: 2, label: 'Biologia' },
+                { value: 3, label: 'Ciências' },
+                { value: 4, label: 'Física' },
+                { value: 5, label: 'História' },
+                { value: 6, label: 'Matemática' },
+                { value: 7, label: 'Português' },
+                { value: 8, label: 'Química' },
+              ]}
+            />
         </fieldset>
       </form>
-
-      {/* lista */}
 
       <ul>
         {doctors.map(doctor => {
@@ -65,19 +91,28 @@ export default function FindDoctors() {
             <strong>Telefone(Celular):</strong>
             <p>{doctor.phone}</p>
 
-            <button type="button" className="update"
-                    onClick={() => {
-                      history.push(`/update-doctor/${doctor.crm}`)
-                    }}
-                  >
-                    <HiPencilAlt size={24} color="#4C9C17" />
-                  </button>
+            {doctor.specialties.map((specialty) => {
+              return (
+                <div key={specialty.id}>
+                  <strong>Especialidade:</strong>
+                  <p>{specialty.name}</p>
+                </div>
+              )
+            })}
 
-                  <button type="button" className="delete"
-                    onClick={() => handleDeleteDoctor(doctor.id)}
-                  >
-                    <FiTrash size={24} color="#E43335" />
-                  </button>
+            <button type="button" className="update"
+              onClick={() => {
+                history.push(`/update-doctor/${doctor.crm}`)
+              }}
+            >
+              <HiPencilAlt size={24} color="#4C9C17" />
+            </button>
+
+            <button type="button" className="delete"
+              onClick={() => handleDeleteDoctor(doctor.id)}
+            >
+              <FiTrash size={24} color="#E43335" />
+            </button>
 
           </li>
         })}
