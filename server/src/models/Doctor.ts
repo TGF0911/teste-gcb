@@ -21,7 +21,9 @@ export class Doctor {
   @Column()
   cep: string;
 
-  @ManyToMany(specialty => Specialty)
+  @ManyToMany(specialty => Specialty, {
+    cascade: true
+  })
   @JoinTable({ name: 'doctors_specialties_specialty', joinColumn: { name: 'doctor_id' }, inverseJoinColumn: { name: 'specialty_id' } })
   specialties : Specialty[]
 }

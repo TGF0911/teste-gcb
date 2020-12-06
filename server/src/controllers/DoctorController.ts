@@ -54,7 +54,7 @@ export default {
   },
 
   async show (req : Request, res : Response) {
-    const { id } = req.params
+    const id = req.params.id
 
     const doctorRepository = getRepository(Doctor)
 
@@ -62,15 +62,25 @@ export default {
     return res.json(doctor)
   },
   async update (req : Request, res : Response) {
-    const { id } = req.params
+    const crm = req.params.crm
     const doctorRepository = getRepository(Doctor)
 
-    const doctor = await doctorRepository.findOneOrFail(id)
+    const doctor = await doctorRepository.findOneOrFail(crm)
 
     if (!doctor) return res.status(401).json({ message: 'Doctor not found' })
 
     doctorRepository.merge(doctor, req.body)
     const results = await doctorRepository.save(doctor)
     return res.json(results)
+  },
+  async delete (req : Request, res : Response) {
+    const id = req.params.id
+    const doctorRepository = getRepository(Doctor)
+    const doctor = doctorRepository.findOne(id)
+
+    if (!doctor) return res.status(401).json({ message: 'This doctor not exists' })
+
+    await doctorRepository.softDelete(id)
+    return res.json(doctor)
   }
 }
