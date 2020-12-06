@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm'
 import { Doctor } from '../models/Doctor'
 import { Specialty } from '../models/Specialty'
 import * as Yup from 'yup'
+import api from '../__test__/services/api'
 
 export default {
 
@@ -20,7 +21,7 @@ export default {
       return { id: specialty.id }
     })
 
-    const data = {
+    const dataDoctor = {
       name,
       crm,
       cep,
@@ -30,19 +31,23 @@ export default {
     }
 
     const schema = Yup.object().shape({
-      name: Yup.string().required(),
+      name: Yup.string().required().max(120),
       crm: Yup.string().required(),
-      cep: Yup.string().required(),
+      cep: Yup.string().required().max(9),
       phone: Yup.string().required(),
-      landline: Yup.string().required()
+      landline: Yup.string().required(),
+      specialties: Yup.array().required().min(2)
     })
 
-    await schema.validate(data, { abortEarly: false })
+    await schema.validate(dataDoctor, { abortEarly: false })
 
-    const doctorData = doctorRepository.create(data)
+    const doctorData = doctorRepository.create(dataDoctor)
     await doctorRepository.save(doctorData)
 
-    return res.status(201).json(doctor)
+    const consultaCEP = `https://viacep.com.br/ws/${cep}/json/`
+    const { data } = await api.get(consultaCEP)
+
+    return res.status(201).json({ doctorData, data })
   },
 
   async index (req : Request, res : Response) {

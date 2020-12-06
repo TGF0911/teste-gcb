@@ -15,6 +15,7 @@
       "mysql": "^2.14.1",
       "sqlite3": "^5.0.0",
       "typeorm": "0.2.29",
+      "xmlhttprequest": "^1.8.0",
       "yup": "^0.32.1"
    },
    "devDependencies": {
