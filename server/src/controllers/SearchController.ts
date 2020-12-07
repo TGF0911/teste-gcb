@@ -6,10 +6,8 @@ import api from '../services/api'
 export default {
   async findByName (req : Request, res : Response) {
     const selected = req.query
-    console.log(selected)
     const doctorRepository = getRepository(Doctor)
     const doctor = await doctorRepository.find({ where: { name: selected }, relations: ['specialties'] })
-    console.log(doctor)
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
 
     return res.json(doctor)

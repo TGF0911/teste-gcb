@@ -28,7 +28,6 @@ export default function CreateDoctors() {
     api.get('/specialty').then(({ data }) => setSpecialty(data))
   })
 
-
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 

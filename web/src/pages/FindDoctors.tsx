@@ -3,7 +3,6 @@ import api from '../services/api'
 import { useHistory } from 'react-router-dom'
 import { HiPencilAlt } from 'react-icons/hi'
 import { FiTrash } from 'react-icons/fi'
-import Select from '../components/Select'
 
 import '../styles/find-doctors.css'
 
@@ -33,29 +32,13 @@ export default function FindDoctors() {
   const [city, setCity] = useState('')
   const [street, setStreet] = useState('')
 
+
   useEffect(() => {
     api.get('/doctors').then(({ data }) => setDoctors(data))
-  }, [])
+  })
 
   if (!doctors) return <p>Loading</p>;
 
-  async function findDoctor() {
-    if (selected === 'crm') {
-      await api.get(`/doctors/${selected}`, {
-        params: {
-          uf,
-          cidade: city,
-          logradouro: street
-        }
-      })
-    } else {
-      await api.get(`/doctors/${selected}`, {
-        params: {
-          selected: text
-        }
-      })
-    }
-  }
 
   async function handleDeleteDoctor(id: number) {
     try {
@@ -69,58 +52,7 @@ export default function FindDoctors() {
 
   return (
     <div id="find-container">
-      <form onSubmit={findDoctor} >
-        <fieldset>
-
-          <legend>Encontre um médico</legend>
-
-          <Select
-            name="speciality"
-            label="Especialidade"
-            value={selected}
-            onChange={(e) => {
-              setSelected(e.target.value);
-            }}
-
-            options={[
-              { value: 1, label: 'ALERGOLOGIA' },
-              { value: 2, label: 'ANGIOLOGIA' },
-              { value: 3, label: 'BUCO MAXILO' },
-              { value: 4, label: 'CARDIOLOGIA CLÍNICA' },
-              { value: 5, label: 'CARDIOLOGIA INFANTIL' },
-              { value: 6, label: 'CIRURGIA CABEÇA E PESCOÇO' },
-              { value: 7, label: 'CIRURGIA CARDÍACA' },
-              { value: 8, label: 'CIRURGIA DE TÓRAX' },
-            ]}
-          />
-
-          {selected === 'endereco' ? (
-            <><div className="input-block">
-              <label htmlFor="uf">UF:</label>
-              <input type="text" id="uf" value={uf} onChange={e => setUf(e.target.value)} />
-            </div>
-              <div className="input-block">
-                <label htmlFor="city">city:</label>
-                <input type="text" id="city" value={city} onChange={e => setCity(e.target.value)} />
-              </div>
-              <div className="input-block">
-                <label htmlFor="street">street:</label>
-                <input type="text" id="street" value={street} onChange={e => setStreet(e.target.value)} />
-              </div></>
-
-          ) : (
-              <div className="input-block">
-                <label htmlFor="text">Pesquisa:</label>
-                <input type="text" id="text" value={text} onChange={e => setText(e.target.value)} />
-              </div>
-
-            )
-
-          }
-        </fieldset>
-        <button type="submit">Buscar</button>
-      </form>
-
+  
       <div className="container">
 
         <ul>

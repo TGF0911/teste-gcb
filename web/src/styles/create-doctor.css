@@ -48,7 +48,7 @@
 }
 
 #create-doctor-container form fieldset .input-block,
-#create-doctor-container form fieldset .select-block {
+#create-doctor-container form fieldset .checkbox-block {
   margin-top: 2.4rem;
 }
 
@@ -86,13 +86,13 @@
     padding: 0 6.4rem;
   }
 
-  #create-doctor-container form .schedule-item {
+  #create-doctor-container form .checkbox-block {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     column-gap: 1.6rem;
   }
 
-  #create-doctor-container form .schedule-item .input-block {
+  #create-doctor-container form .checkbox-block .input-block {
     margin-top: 0 !important;
   }
   

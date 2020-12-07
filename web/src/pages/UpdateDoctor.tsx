@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FormEvent } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import Select from '../components/Select'
 import api from '../services/api'
 
 interface Doctor{
