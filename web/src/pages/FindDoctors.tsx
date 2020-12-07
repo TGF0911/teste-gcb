@@ -5,6 +5,8 @@ import { HiPencilAlt } from 'react-icons/hi'
 import { FiTrash } from 'react-icons/fi'
 import Select from '../components/Select'
 
+import '../styles/find-doctors.css'
+
 interface Doctor {
   id: number;
   name: string;
@@ -33,27 +35,26 @@ export default function FindDoctors() {
 
   useEffect(() => {
     api.get('/doctors').then(({ data }) => setDoctors(data))
-  })
+  }, [])
+
+  if (!doctors) return <p>Loading</p>;
 
   async function findDoctor() {
     if (selected === 'crm') {
       await api.get(`/doctors/${selected}`, {
         params: {
-         uf,
-         cidade: city,
-         logradouro: street
+          uf,
+          cidade: city,
+          logradouro: street
         }
       })
-    }else {
+    } else {
       await api.get(`/doctors/${selected}`, {
         params: {
           selected: text
         }
       })
     }
-
-    
-
   }
 
   async function handleDeleteDoctor(id: number) {
@@ -62,7 +63,7 @@ export default function FindDoctors() {
       setDoctors(doctors.filter(doctor => doctor.id !== id))
 
     } catch (error) {
-      alert('Erro ao deletar caso, tente novamente!')
+      alert('Erro ao deletar, tente novamente!')
     }
   }
 
@@ -80,7 +81,7 @@ export default function FindDoctors() {
             onChange={(e) => {
               setSelected(e.target.value);
             }}
-            
+
             options={[
               { value: 1, label: 'ALERGOLOGIA' },
               { value: 2, label: 'ANGIOLOGIA' },
@@ -120,50 +121,46 @@ export default function FindDoctors() {
         <button type="submit">Buscar</button>
       </form>
 
-      <ul>
-        {doctors.map(doctor => {
-          <li key={doctor.id}>
-            <strong>Nome:</strong>
-            <p>{doctor.name}</p>
+      <div className="container">
 
-            <strong>CRM:</strong>
-            <p>{doctor.crm}</p>
+        <ul>
+          {doctors.map((doctor) => {
+            <li key={doctor.id} >
+              <strong>Nome:</strong>
+              <p>{doctor.name}</p>
 
-            <strong>CEP:</strong>
-            <p>{doctor.cep}</p>
+              <strong>CRM:</strong>
+              <p>{doctor.crm}</p>
 
-            <strong>Telefone(Fixo):</strong>
-            <p>{doctor.landline}</p>
+              <strong>Telefone(Fixo):</strong>
+              <p>{doctor.landline}</p>
 
-            <strong>Telefone(Celular):</strong>
-            <p>{doctor.phone}</p>
+              <strong>Telefone(Celular):</strong>
+              <p>{doctor.phone}</p>
 
-            {doctor.specialties.map((specialty) => {
-              return (
-                <div key={specialty.id}>
-                  <strong>Especialidade:</strong>
-                  <p>{specialty.name}</p>
-                </div>
-              )
-            })}
+              <strong>CEP:</strong>
+              <p>{doctor.cep}</p>
 
-            <button type="button" className="update"
-              onClick={() => {
-                history.push(`/update-doctor/${doctor.crm}`)
-              }}
-            >
-              <HiPencilAlt size={24} color="#4C9C17" />
-            </button>
+              
+           <button type="button" className="update"
+                onClick={() => {
+                  history.push(`/update-doctor/${doctor.crm}`)
+                }}
+                >
+                <HiPencilAlt size={24} color="#4C9C17" />
+              </button>
 
-            <button type="button" className="delete"
-              onClick={() => handleDeleteDoctor(doctor.id)}
-            >
-              <FiTrash size={24} color="#E43335" />
-            </button>
+              <button type="button" className="delete"
+                onClick={() => handleDeleteDoctor(doctor.id)}
+                >
+                <FiTrash size={24} color="#E43335" />
+              </button> 
+                </li>
+          })}
 
-          </li>
-        })}
-      </ul>
+
+        </ul>
+      </div>
 
     </div>
   )

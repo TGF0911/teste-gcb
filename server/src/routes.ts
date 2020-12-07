@@ -19,5 +19,5 @@ routes.get('/doctor/phone', SearchController.findPhone)
 routes.get('/doctor/adress', SearchController.findAdress)
 
 routes.post('/specialty', SpecialtyController.create)
-
+routes.get('/specialty', SpecialtyController.index)
 export default routes

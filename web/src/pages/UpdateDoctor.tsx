@@ -18,6 +18,11 @@ interface Doctor{
   ];
 }
 
+interface Specialty {
+  id: number;
+  name: string;
+}
+
 interface RouteParams {
   id: string;
 }
@@ -27,6 +32,8 @@ export default function UpdateDoctor() {
   const params = useParams<RouteParams>();
  
   const [doctor, setDoctor] = useState<Doctor>()
+  const [specialty, setSpecialty] = useState<Specialty[]>([])
+
 
   const [name, setName] = useState('')
   const [crm, setCrm] = useState('')
@@ -36,10 +43,10 @@ export default function UpdateDoctor() {
   const [specialties, setSpecialties] = useState<string[]>([])
 
   useEffect(() => {
-    api.get(`doctor/${params.id}`).then((response) => {
+    api.get(`doctors/${params.id}`).then((response) => {
       setDoctor(response.data);
     });
-    console.log(params.id)
+    api.get('/specialty').then(({ data }) => setSpecialty(data))
   }, [params.id]);
 
   async function UpdateDoctor(e : FormEvent){
@@ -86,26 +93,18 @@ export default function UpdateDoctor() {
             <input type="text" id="phone" value={phone} onChange={e => setPhone(e.target.value)} />
           </div>
 
-          {specialties.map((specialty) => {
-
-            <Select
-              name="subject"
-              label="Matéria"
-              value={specialty}
-              onChange={(e) => {
-                setSpecialties([...specialties, e.target.value]);
-              }}
-              options={[
-                { value: 1, label: 'ALERGOLOGIA' },
-                { value: 2, label: 'ANGIOLOGIA' },
-                { value: 3, label: 'BUCO MAXILO' },
-                { value: 4, label: 'CARDIOLOGIA CLÍNICA' },
-                { value: 5, label: 'CARDIOLOGIA INFANTIL' },
-                { value: 6, label: 'CIRURGIA CABEÇA E PESCOÇO' },
-                { value: 7, label: 'CIRURGIA CARDÍACA' },
-                { value: 8, label: 'CIRURGIA DE TÓRAX' },
-              ]}
-            />
+          {specialty.map((specialty) => {
+            return (
+              <div className="checkbox-block" key={specialty.id}>
+                <label htmlFor={specialty.name}>{specialty.name}</label>
+                <input
+                  type='checkbox'
+                  id={specialty.name}
+                  value={specialty.id}
+                  onChange={e => setSpecialties([...specialties, e.target.value])}
+                />
+              </div>
+            )
           })}
         </fieldset>
       </form>

@@ -1,0 +1,76 @@
+#find-container {
+  width: 100vw;
+  height: 100vh;
+  color: #000;
+}
+
+
+.container ul{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+  list-style: none;
+
+}
+
+.container ul li{
+  background: #FFF;
+  padding: 24px;
+  border-radius:8px;
+
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-area: 'name info';
+  grid-gap: 10px;
+  list-style: none;
+  
+}
+
+.container ul li .name {
+  grid-area: 'name';
+}
+
+.container ul li .info {
+  grid-area: 'info';
+}
+
+.container ul li .update{
+  position: absolute;
+  right: 54px;
+  top: 24px;
+  border:0;
+}
+
+.container ul li .delete{
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  border:0;
+}
+
+.container ul li button + button{
+  justify-content : space-between;
+}
+
+.container ul li button:hover{
+  cursor: pointer;
+  opacity: 2;
+}
+
+.container ul li strong{
+  display: block;
+  margin-bottom: 8px;
+  color: #41414d;
+}
+
+.container ul li p + strong{
+  margin-top: 16px;
+}
+
+.container ul li p{
+  columns: #737380;
+  line-height: 21px;
+  font-size: 16px;
+}

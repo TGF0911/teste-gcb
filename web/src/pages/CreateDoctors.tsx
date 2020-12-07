@@ -1,9 +1,9 @@
 import React, { FormEvent, useState, useEffect } from 'react'
-import Select from '../components/Select'
 import api from '../services/api'
-import { useForm } from 'react-hook-form'
 
 import '../styles/create-doctor.css'
+import { HiPencilAlt } from 'react-icons/hi'
+import { useHistory } from 'react-router-dom'
 
 interface Specialty {
   id: number;
@@ -12,8 +12,8 @@ interface Specialty {
 
 export default function CreateDoctors() {
 
-  const { register, } = useForm()
-
+  const history  = useHistory()
+  
   const [specialty, setSpecialty] = useState<Specialty[]>([])
 
   const [name, setName] = useState('')
@@ -23,9 +23,11 @@ export default function CreateDoctors() {
   const [phone, setPhone] = useState('')
   const [specialties, setSpecialties] = useState<string[]>([])
 
+
   useEffect(() => {
-    api.get('/specialties').then(({ data }) => setSpecialty(data))
+    api.get('/specialty').then(({ data }) => setSpecialty(data))
   })
+
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -40,8 +42,45 @@ export default function CreateDoctors() {
 
     await api.post('/doctors', data)
 
-    //return ul com dados do Médico cadastrado
+    return (
+      <ul>
+      
+        <li >
+          <strong>Nome:</strong>
+          <p>{name}</p>
 
+          <strong>CRM:</strong>
+          <p>{crm}</p>
+
+          <strong>CEP:</strong>
+          <p>{cep}</p>
+
+          <strong>Telefone(Fixo):</strong>
+          <p>{landline}</p>
+
+          <strong>Telefone(Celular):</strong>
+          <p>{phone}</p>
+
+          {specialties.map((specialty) => {
+            return (
+              <div>
+                <strong>Especialidade:</strong>
+                <p>{specialty}</p>
+              </div>
+            )
+          })}
+
+          <button type="button" className="update"
+            onClick={() => {
+              history.push(`/update-doctor/${crm}`)
+            }}
+          >
+            <HiPencilAlt size={24} color="#4C9C17" />
+          </button>
+          </li >
+    </ul>
+      )
+    
   }
 
   return (
@@ -53,12 +92,9 @@ export default function CreateDoctors() {
             <label htmlFor="name">Nome Completo:</label>
             <input
               type="text"
-              ref={register({
-                required: true,
-                maxLength: 120,
-                pattern: /^[A-Za-z]+$/i
-              })}
+              maxLength={120}
               id="name"
+              required
               value={name}
               onChange={e => setName(e.target.value)}
             />
@@ -69,11 +105,7 @@ export default function CreateDoctors() {
             <input
               type="text"
               id="crm"
-              ref={register({
-                required: true,
-                maxLength: 120,
-                pattern: /[0-9]{2}.[\d]{3}.[/d]{2}/g
-              })}
+              required
               value={crm}
               onChange={e => setCrm(e.target.value)}
             />
@@ -83,11 +115,10 @@ export default function CreateDoctors() {
             <label htmlFor="cep">CEP (00000-000):</label>
             <input
               type="text"
-              ref={register({
-                required: true,
-                pattern: /[0-9]{5}-[\d]{3}/g
-              })}
+              maxLength={9}
+              minLength={9}
               id="cep"
+              required
               value={cep}
               onChange={e => setCep(e.target.value)}
             />
@@ -99,6 +130,7 @@ export default function CreateDoctors() {
               type="text"
               id="landline"
               value={landline}
+              required
               onChange={e => setLandline(e.target.value)}
             />
           </div>
@@ -109,15 +141,16 @@ export default function CreateDoctors() {
               type="text"
               id="phone"
               value={phone}
+              required
               onChange={e => setPhone(e.target.value)}
             />
           </div>
 
-          
+              <label>Especialidades (Selecina no minimo 2)</label>
           {specialty.map((specialty) => {
             return (
               <div className="checkbox-block" key={specialty.id}>
-                <label htmlFor={specialty.name}>specialty.name</label>
+                <label htmlFor={specialty.name}>{specialty.name}</label>
                 <input
                   type='checkbox'
                   id={specialty.name}
@@ -128,10 +161,6 @@ export default function CreateDoctors() {
 
             )
           })}
-
-
-
-
 
         </fieldset>
 
