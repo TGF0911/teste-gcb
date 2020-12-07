@@ -14,9 +14,9 @@ routes.delete('/doctor/:id', DoctorController.delete)
 routes.get('/doctor/name', SearchController.findByName)
 routes.get('/doctor/cep', SearchController.findCEP)
 routes.get('/doctor/crm', SearchController.findCRM)
-routes.get('/doctor/speciality', SearchController.findSpecialty)
 routes.get('/doctor/landline', SearchController.findLandline)
 routes.get('/doctor/phone', SearchController.findPhone)
+routes.get('/doctor/adress', SearchController.findAdress)
 
 routes.post('/specialty', SpecialtyController.create)
 

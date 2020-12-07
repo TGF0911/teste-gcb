@@ -1,22 +1,22 @@
 import { Response, Request } from 'express'
 import { getRepository } from 'typeorm'
 import { Doctor } from '../models/Doctor'
-import api from '../__test__/services/api'
-
-const doctorRepository = getRepository(Doctor)
+import api from '../services/api'
 
 export default {
   async findByName (req : Request, res : Response) {
-    const selected = req.body
-
+    const selected = req.query
+    console.log(selected)
+    const doctorRepository = getRepository(Doctor)
     const doctor = await doctorRepository.find({ where: { name: selected }, relations: ['specialties'] })
-
+    console.log(doctor)
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
 
     return res.json(doctor)
   },
   async findCRM (req : Request, res : Response) {
     const { selected } = req.query
+    const doctorRepository = getRepository(Doctor)
     const doctor = await doctorRepository.find({ where: { crm: selected }, relations: ['specialties'] })
 
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
@@ -25,6 +25,7 @@ export default {
   },
   async findCEP (req : Request, res : Response) {
     const { selected } = req.query
+    const doctorRepository = getRepository(Doctor)
     const doctor = await doctorRepository.find({ where: { cep: selected }, relations: ['specialties'] })
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
 
@@ -34,15 +35,9 @@ export default {
     return res.json({ doctor, data })
   },
 
-  async findSpecialty (req : Request, res : Response) {
-    const { selected } = req.query
-    const doctor = await doctorRepository.find({ where: { specialties: selected }, relations: ['specialties'] })
-    if (!doctor) return res.status(401).json({ message: 'Not Found' })
-    return res.json(doctor)
-  },
-
   async findLandline (req : Request, res : Response) {
     const { selected } = req.query
+    const doctorRepository = getRepository(Doctor)
     const doctor = await doctorRepository.find({ where: { landline: selected }, relations: ['specialties'] })
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
     return res.json(doctor)
@@ -50,6 +45,7 @@ export default {
 
   async findPhone (req : Request, res : Response) {
     const { selected } = req.query
+    const doctorRepository = getRepository(Doctor)
     const doctor = await doctorRepository.find({ where: { phone: selected }, relations: ['specialties'] })
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
     return res.json(doctor)
@@ -57,11 +53,18 @@ export default {
 
   async findAdress (req : Request, res : Response) {
     const { uf, logradouro, cidade } = req.query
-    const consultaCEP = `viacep.com.br/ws/${uf}/${cidade}/${logradouro}/json/`
+
+    const consultaCEP = `https://viacep.com.br/ws/${uf}/${cidade}/${logradouro}/json/`
+
     const { data } = await api.get(consultaCEP)
+
+    const doctorRepository = getRepository(Doctor)
+
     const doctor = await doctorRepository.find({ where: { cep: data.cep }, relations: ['specialties'] })
+
     if (!doctor) return res.status(401).json({ message: 'Not Found' })
-    return res.json(doctor)
+
+    return res.json({ doctor, data, message: 'Sucess' })
   }
 
 }

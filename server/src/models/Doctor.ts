@@ -24,6 +24,6 @@ export class Doctor {
   @ManyToMany(specialty => Specialty, {
     cascade: true
   })
-  @JoinTable({ name: 'doctors_specialties_specialty', joinColumn: { name: 'doctor_id' }, inverseJoinColumn: { name: 'specialty_id' } })
+  @JoinTable({ name: 'doctors_specialties_specialty', joinColumn: { name: 'doctor_id', referencedColumnName: 'id' }, inverseJoinColumn: { name: 'specialty_id', referencedColumnName: 'id' } })
   specialties : Specialty[]
 }

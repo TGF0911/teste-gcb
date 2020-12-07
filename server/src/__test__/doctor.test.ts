@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-expressions */
 import 'mocha'
 import { expect } from 'chai'
-import api from './services/api'
+import api from '../services/api'
 
 interface Doctor {
   name: string;

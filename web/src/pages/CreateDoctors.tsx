@@ -1,10 +1,20 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useState, useEffect } from 'react'
 import Select from '../components/Select'
 import api from '../services/api'
+import { useForm } from 'react-hook-form'
 
 import '../styles/create-doctor.css'
 
+interface Specialty {
+  id: number;
+  name: string;
+}
+
 export default function CreateDoctors() {
+
+  const { register, } = useForm()
+
+  const [specialty, setSpecialty] = useState<Specialty[]>([])
 
   const [name, setName] = useState('')
   const [crm, setCrm] = useState('')
@@ -13,6 +23,9 @@ export default function CreateDoctors() {
   const [phone, setPhone] = useState('')
   const [specialties, setSpecialties] = useState<string[]>([])
 
+  useEffect(() => {
+    api.get('/specialties').then(({ data }) => setSpecialty(data))
+  })
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -40,7 +53,11 @@ export default function CreateDoctors() {
             <label htmlFor="name">Nome Completo:</label>
             <input
               type="text"
-              maxLength={120}
+              ref={register({
+                required: true,
+                maxLength: 120,
+                pattern: /^[A-Za-z]+$/i
+              })}
               id="name"
               value={name}
               onChange={e => setName(e.target.value)}
@@ -48,20 +65,28 @@ export default function CreateDoctors() {
           </div>
 
           <div className="input-block">
-            <label htmlFor="crm">CRM:</label>
+            <label htmlFor="crm">CRM(00.000.00):</label>
             <input
               type="text"
               id="crm"
+              ref={register({
+                required: true,
+                maxLength: 120,
+                pattern: /[0-9]{2}.[\d]{3}.[/d]{2}/g
+              })}
               value={crm}
               onChange={e => setCrm(e.target.value)}
             />
           </div>
 
           <div className="input-block">
-            <label htmlFor="cep">CEP:</label>
+            <label htmlFor="cep">CEP (00000-000):</label>
             <input
               type="text"
-              maxLength={9}
+              ref={register({
+                required: true,
+                pattern: /[0-9]{5}-[\d]{3}/g
+              })}
               id="cep"
               value={cep}
               onChange={e => setCep(e.target.value)}
@@ -79,7 +104,7 @@ export default function CreateDoctors() {
           </div>
 
           <div className="input-block">
-            <label htmlFor="phone">phone:</label>
+            <label htmlFor="phone">Telefone(Celular):</label>
             <input
               type="text"
               id="phone"
@@ -87,27 +112,26 @@ export default function CreateDoctors() {
               onChange={e => setPhone(e.target.value)}
             />
           </div>
-          {specialties.map((specialty) => {
 
-            <Select
-              name="subject"
-              label="Matéria"
-              value={specialty}
-              onChange={(e) => {
-                setSpecialties([...specialties, e.target.value]);
-              }}
-              options={[
-                { value: 1, label: 'ALERGOLOGIA' },
-                { value: 2, label: 'ANGIOLOGIA' },
-                { value: 3, label: 'BUCO MAXILO' },
-                { value: 4, label: 'CARDIOLOGIA CLÍNICA' },
-                { value: 5, label: 'CARDIOLOGIA INFANTIL' },
-                { value: 6, label: 'CIRURGIA CABEÇA E PESCOÇO' },
-                { value: 7, label: 'CIRURGIA CARDÍACA' },
-                { value: 8, label: 'CIRURGIA DE TÓRAX' },
-              ]}
-            />
+          
+          {specialty.map((specialty) => {
+            return (
+              <div className="checkbox-block" key={specialty.id}>
+                <label htmlFor={specialty.name}>specialty.name</label>
+                <input
+                  type='checkbox'
+                  id={specialty.name}
+                  value={specialty.id}
+                  onChange={e => setSpecialties([...specialties, e.target.value])}
+                />
+              </div>
+
+            )
           })}
+
+
+
+
 
         </fieldset>
 

@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm'
 import { Doctor } from '../models/Doctor'
 import { Specialty } from '../models/Specialty'
 import * as Yup from 'yup'
-import api from '../__test__/services/api'
+import api from '../services/api'
 
 export default {
 
